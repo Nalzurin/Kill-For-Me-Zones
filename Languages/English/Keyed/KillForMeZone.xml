@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  <KillZone>Kill zone</KillZone>
+  <DesignatorKillZoneDesc>Create an area which will automatically designate pawns to be killed by packs.</DesignatorKillZoneDesc>
+  <CommandAllowMarkForKill>Mark for kill</CommandAllowMarkForKill>
+  <CommandAllowMarkForKillDesc>Allows pawns to be marked for kill in this zone.</CommandAllowMarkForKillDesc>
+  <CommandAllowUnmarkOutsideOfZone>Unmark pawns</CommandAllowUnmarkOutsideOfZone>
+  <CommandAllowUnmarkOutsideOfZoneDesc>Unmark pawns that move outside this zone.</CommandAllowUnmarkOutsideOfZoneDesc>
+  <CommandAllowAttackAnimals>Mark animals</CommandAllowAttackAnimals>
+  <CommandAllowAttackAnimalsDesc>Allows animals to be marked for kill in this zone.</CommandAllowAttackAnimalsDesc>
+  <CommandAllowAttackHumanlikes>Mark humanlikes</CommandAllowAttackHumanlikes>
+  <CommandAllowAttackHumanlikesDesc>Allows humanlikes to be marked for kill in this zone.</CommandAllowAttackHumanlikesDesc>
+  <CommandAllowAttackMechanoids>Mark mechanoids</CommandAllowAttackMechanoids>
+  <CommandAllowAttackMechanoidsDesc>Allows mechanoids to be marked for kill in this zone.</CommandAllowAttackMechanoidsDesc>
+  <CommandAllowAttackEntities>Mark entities</CommandAllowAttackEntities>
+  <CommandAllowAttackEntitiesDesc>Allows entities to be marked for kill in this zone.</CommandAllowAttackEntitiesDesc>
+  <CommandAllowAttackHostiles>Mark hostiles</CommandAllowAttackHostiles>
+  <CommandAllowAttackHostilesDesc>Allows hostile pawns to be marked for kill in this zone.</CommandAllowAttackHostilesDesc>
+  <CommandAllowAttackNeutrals>Mark neutrals</CommandAllowAttackNeutrals>
+  <CommandAllowAttackNeutralsDesc>Allows neutral pawns to be marked for kill in this zone.</CommandAllowAttackNeutralsDesc>
+  <KillZoneTickInterval>Interval between checking pawns in zone</KillZoneTickInterval>
+</LanguageData>
