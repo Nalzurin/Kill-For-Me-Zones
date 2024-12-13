@@ -71,16 +71,7 @@ namespace KillForMeZones
             {
                 yield return gizmo;
             }
-            /*            Command_Toggle command_ToggleAssignPack = new Command_Toggle();
-                        command_ToggleAssignPack.defaultLabel = "CommandAllowAssignPack".Translate();
-                        command_ToggleAssignPack.defaultDesc = "CommandAllowAssignPackDesc".Translate();
-                        command_ToggleAssignPack.icon = null;
-                        command_ToggleAssignPack.isActive = () => assignPack;
-                        command_ToggleAssignPack.toggleAction = delegate
-                        {
-                            assignPack = !assignPack;
-                        };
-                        yield return command_ToggleAssignPack;*/
+
             Command_Toggle command_ToggleMarkForKill = new Command_Toggle();
             command_ToggleMarkForKill.defaultLabel = "CommandAllowMarkForKill".Translate();
             command_ToggleMarkForKill.defaultDesc = "CommandAllowMarkForKillDesc".Translate();
@@ -185,7 +176,7 @@ namespace KillForMeZones
             {
                 foreach (Pawn pawn in cell.GetThingList(Map).Where(c => c is Pawn))
                 {
-                    if (pawn != null)
+                    if (pawn != null && !pawn.Dead)
                     {
                         if (!pawnsInZone.Contains(pawn))
                         {
@@ -197,7 +188,7 @@ namespace KillForMeZones
                 }
             }
             List<Pawn> updatedPawns = new List<Pawn>();
-            Log.Message("Checking pawn list for pawns");
+            //Log.Message("Checking pawn list for pawns");
             List<Pawn> pawns = pawnsInZoneForReading;
             foreach (Pawn pawn in pawns)
             {
@@ -256,20 +247,17 @@ namespace KillForMeZones
         }
         public void TryUnmarkPawn(Pawn p)
         {
-            Log.Message("Trying to unmark pawn");
+            //Log.Message("Trying to unmark pawn");
             if (pawnsInZone.Contains(p))
             {
                 if (unmarkOutsideOfZone)
                 {
-                    Log.Message("unmark outside of zone is on, removing all designations");
-                    p.Map.designationManager.RemoveAllDesignationsOn(p, false);
+                    //Log.Message("unmark outside of zone is on, removing all designations");
+                    //Log.Message(p.Map == null);
+                    Map.designationManager.RemoveDesignation(Map.designationManager.DesignationOn(p, DesignationKill));
                 }
-                Log.Message("Removing pawn from the zone");
-                //pawnsInZone.Remove(p);
 
             }
-
-
         }
     }
 }
