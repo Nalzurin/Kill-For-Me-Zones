@@ -15,7 +15,8 @@ namespace KillForMeZones
         public static readonly Texture2D icon = ContentFinder<Texture2D>.Get("UI/Designators/KillDesignation");
         public override bool IsMultiselectable => false;
 
-        public static Dictionary<Pawn, Zone_Kill> pawnsInZones = new Dictionary<Pawn, Zone_Kill>();
+        public List<Pawn> pawnsInZone = new List<Pawn>();
+        public List<Pawn> pawnsInZoneForReading => pawnsInZone;
         public bool assignPack = false;
         public bool markForKill = true;
         public bool attackAnimals = true;
@@ -32,11 +33,11 @@ namespace KillForMeZones
                 return DefDatabase<DesignationDef>.GetNamed(aRandomKiwi.KFM.Utils.killDesignation);
             }
         }
-        protected override Color NextZoneColor => new Color(0,0,0, 0.3f);
+        protected override Color NextZoneColor => new Color(0, 0, 0, 0.3f);
 
         public Zone_Kill()
         {
-          
+
         }
 
         public Zone_Kill(ZoneManager zoneManager)
@@ -55,11 +56,11 @@ namespace KillForMeZones
             Scribe_Values.Look(ref attackNeutrals, "attackNeutrals", false);
             Scribe_Values.Look(ref attackHostiles, "attackHostiles", true);
             Scribe_Values.Look(ref unmarkOutsideOfZone, "unmarkOutsideOfZone", false);
-            Scribe_Collections.Look(ref pawnsInZones, "pawnsMarked", LookMode.Reference, LookMode.Reference);
+            Scribe_Collections.Look(ref pawnsInZone, "pawnsInZone", LookMode.Reference);
         }
 
 
-        public override void AddCell(IntVec3 c) 
+        public override void AddCell(IntVec3 c)
         {
             base.AddCell(c);
         }
@@ -177,6 +178,40 @@ namespace KillForMeZones
             yield return DesignatorUtility.FindAllowedDesignator<Designator_ZoneAdd_Kill_Expand>();
         }
 
+        public void ScanZone()
+        {
+            List<Pawn> checkedPawns = new List<Pawn>();
+            foreach (IntVec3 cell in cells)
+            {
+                foreach (Pawn pawn in cell.GetThingList(Map).Where(c => c is Pawn))
+                {
+                    if (pawn != null)
+                    {
+                        if (!pawnsInZone.Contains(pawn))
+                        {
+                            CheckPawn(pawn);
+                            
+                        }
+                        checkedPawns.Add(pawn);
+                    }
+                }
+            }
+            List<Pawn> updatedPawns = new List<Pawn>();
+            Log.Message("Checking pawn list for pawns");
+            List<Pawn> pawns = pawnsInZoneForReading;
+            foreach (Pawn pawn in pawns)
+            {
+                if (checkedPawns.Contains(pawn))
+                {
+                    updatedPawns.Add(pawn);
+                }
+                else
+                {
+                    TryUnmarkPawn(pawn);
+                }
+            }
+            pawnsInZone = updatedPawns;
+        }
         public void CheckPawn(Pawn p)
         {
             if (!markForKill)
@@ -216,21 +251,24 @@ namespace KillForMeZones
             {
                 Map.designationManager.RemoveAllDesignationsOn(p, false);
                 Map.designationManager.AddDesignation(new Designation(p, DesignationKill));
-                pawnsInZones[p] = this;
             }
+            pawnsInZone.Add(p);
         }
-        public static void TryUnmarkPawn(Pawn p)
+        public void TryUnmarkPawn(Pawn p)
         {
-            if (pawnsInZones.ContainsKey(p))
+            Log.Message("Trying to unmark pawn");
+            if (pawnsInZone.Contains(p))
             {
-                if (pawnsInZones[p].unmarkOutsideOfZone)
+                if (unmarkOutsideOfZone)
                 {
+                    Log.Message("unmark outside of zone is on, removing all designations");
                     p.Map.designationManager.RemoveAllDesignationsOn(p, false);
                 }
-                pawnsInZones.Remove(p);
-                
+                Log.Message("Removing pawn from the zone");
+                //pawnsInZone.Remove(p);
+
             }
-            
+
 
         }
     }

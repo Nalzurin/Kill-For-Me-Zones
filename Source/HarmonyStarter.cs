@@ -25,6 +25,30 @@ namespace KillForMeZones
     }
 
     [HarmonyPatch]
+    public static class Patch_MapTick
+    {
+        private static MethodBase TargetMethod()
+        {
+            return AccessTools.Method(typeof(Map), nameof(Map.MapPostTick));
+        }
+
+        private static void Postfix(Map __instance)
+        {
+            if (__instance.IsHashIntervalTick(KillForMeZones_Settings.ZoneTick))
+            {
+                foreach(Zone_Kill zone in __instance.zoneManager.AllZones.Where(c=>c is Zone_Kill))
+                {
+                    zone.ScanZone();
+                }
+
+            }
+
+
+        }
+    }
+
+
+/*    [HarmonyPatch]
     public static class Patch_PawnTick
     {
         private static MethodBase TargetMethod()
@@ -43,18 +67,19 @@ namespace KillForMeZones
                         zone.CheckPawn(__instance);
 
                     }
-                    else
-                    {
-                        Zone_Kill.TryUnmarkPawn(__instance);
-                    }
 
                 }
+                else
+                {
+                    Zone_Kill.TryUnmarkPawn(__instance);
+                }
+               
             }
            
 
         }
-    }
-    [HarmonyPatch]
+    }*/
+/*    [HarmonyPatch]
     public static class Patch_Pawn_DeadOrDowned
     {
         private static MethodBase TargetMethod()
@@ -65,12 +90,12 @@ namespace KillForMeZones
         private static void Postfix(ref bool __result, Pawn __instance)
         {
            
-            if(__result)
+            if(__result && Zone_Kill.pawnsInZones.ContainsKey(__instance))
             {
-                Zone_Kill.pawnsInZones[__instance] = null;
+                Zone_Kill.pawnsInZones.Remove(__instance);
             }
         }
-    }
+    }*/
 
     /*    [HarmonyPatch]
         public static class Patch_AreaManager_AddStartingAreas
