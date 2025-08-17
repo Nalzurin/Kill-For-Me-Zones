@@ -6,6 +6,7 @@
   <author>Nalzurin</author>
   <supportedVersions>
     <li>1.5</li>
+    <li>1.6</li>
   </supportedVersions>
   <description>Addon to the Kill For Me mod that allows the player to create zones that will designate pawns for packs to kill.</description>
   <modDependencies>
